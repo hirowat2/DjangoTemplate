@@ -16,7 +16,7 @@ services:
     ports:
       - 5431:5432  # repare na porta externa 5431
     networks:
-      - dicas-de-django-network
+      - proxy
 
   pgadmin:
     container_name: dicas_de_django_pgadmin
@@ -31,7 +31,7 @@ services:
     ports:
       - 5051:80
     networks:
-      - dicas-de-django-network
+      - proxy
 
   mailhog:
     container_name: dicas_de_django_mailhog
@@ -43,7 +43,7 @@ services:
       - 1025:1025
       - 8025:8025
     networks:
-      - dicas-de-django-network
+      - proxy
 
   app:
     build:
@@ -60,20 +60,30 @@ services:
     depends_on:
       - db
     networks:
-      - dicas-de-django-network
+      - proxy
 
-  nginx:
-    container_name: dicas_de_django_nginx
-    image: nginx
-    hostname: nginx
+  reverse-proxy:
+    image: traefik:v2.3
+    security_opt:
+      - no-new-privileges:true
     ports:
-      - '80:8000'
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+      - "3306:3306"
     volumes:
-      - ./docker/config/nginx/:/etc/nginx/conf.d/
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${HOME}/.certs:/etc/certs:ro
+      - ${HOME}/.traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ${HOME}/.traefik/config.yml:/etc/traefik/config.yml:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik=true"
+    networks:
+      - proxy
     depends_on:
       - app
-    networks:
-      - dicas-de-django-network
+
 
   cloudbeaver:
     container_name: dicas_de_django_cloudbeaver
@@ -83,11 +93,12 @@ services:
     ports:
       - 5052:8978
     networks:
-      - dicas-de-django-network
+      - proxy
 
 volumes:
   pgdata:  # mesmo nome do volume externo definido na linha 10
   pgadmin:
 
 networks:
-  dicas-de-django-network:
+  proxy:
+    external: true

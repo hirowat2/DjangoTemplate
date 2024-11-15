@@ -1,4 +1,6 @@
-FROM python:3.10-slim
+FROM python:3.12
+LABEL author="hirowat2"
+LABEL project="djangotemplate"
 
 ENV PYTHONUNBUFFERED 1
 ENV DJANGO_ENV dev
@@ -7,11 +9,20 @@ RUN mkdir /app
 WORKDIR /app
 EXPOSE 8000
 
-COPY requirements.txt .
-RUN pip install -U pip && pip install -r requirements.txt
+RUN pip install --upgrade pip
+RUN [ "pip", "install", "--no-cache-dir", "poetry==1.8.4" ]
 
-COPY manage.py .
-COPY backend backend
+COPY poetry.lock .
+COPY pyproject.toml .
 
-CMD python manage.py collectstatic --no-input
-CMD gunicorn backend.wsgi:application -b 0.0.0.0:8000
+RUN [ "poetry", "config", "virtualenvs.create", "false"]
+RUN [ "poetry", "install", "--no-root", "--no-interaction", "--no-ansi" ]
+
+COPY . .
+
+COPY wait-for-it.sh /usr/local/bin/wait-for-it.sh
+RUN chmod +x /usr/local/bin/wait-for-it.sh
+
+EXPOSE 80
+
+ENTRYPOINT [ "./entrypoint.sh" ]
