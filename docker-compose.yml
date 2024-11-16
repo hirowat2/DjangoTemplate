@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   db:
-    container_name: dicas_de_django_db
+    container_name: django_db
     image: postgres:14-alpine
     restart: always
     user: postgres  # importante definir o usuário
@@ -10,16 +10,16 @@ services:
       - pgdata:/var/lib/postgresql/data
     environment:
       - LC_ALL=C.UTF-8
-      - POSTGRES_PASSWORD=postgres  # senha padrão
-      - POSTGRES_USER=postgres  # usuário padrão
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}  # senha padrão
+      - POSTGRES_USER=${POSTGRES_USER}  # usuário padrão
       - POSTGRES_DB=dicas_de_django_db  # necessário porque foi configurado assim no settings
-    ports:
-      - 5431:5432  # repare na porta externa 5431
+    # ports:
+    #   - 5431:5432  # repare na porta externa 5431
     networks:
       - proxy
 
   pgadmin:
-    container_name: dicas_de_django_pgadmin
+    container_name: django_pgadmin
     image: dpage/pgadmin4
     restart: unless-stopped
     volumes:
@@ -28,20 +28,28 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
       PGADMIN_CONFIG_SERVER_MODE: 'False'
-    ports:
-      - 5051:80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pgadmin.tls=true"
+      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.docker.localhost`)"
     networks:
       - proxy
+    # ports:
+    #   - 5051:80
 
   mailhog:
-    container_name: dicas_de_django_mailhog
+    container_name: django_mailhog
     image: mailhog/mailhog
     restart: always
     logging:
       driver: 'none'
-    ports:
-      - 1025:1025
-      - 8025:8025
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mailhog.tls=true"
+      - "traefik.http.routers.mailhog.rule=Host(`mailhog.docker.localhost`)"
+    # ports:
+    #   - 1025:1025
+    #   - 8025:8025
     networks:
       - proxy
 
@@ -49,14 +57,31 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: dicas_de_django_app
+    container_name: django_app
     hostname: app
     stdin_open: true
     expose:
       - '8000'
     volumes:
       - .env.docker:/app/.env
-    command: bash -c "gunicorn backend.wsgi:application -b 0.0.0.0:8000"
+    # command: bash -c "gunicorn backend.wsgi:application -b 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=dicas_de_django_db
+      - DB_USER=postgres
+      - DB_PASSWORD=a
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
+      - DJANGO_SUPERUSER_EMAIL=admin@estatcamp.com
+      - DJANGO_SETTINGS_MODULE=backend.settings
+    # ports:
+    # - "8000:8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.tls=true"
+      - "traefik.http.routers.app.rule=Host(`app.docker.localhost`)"
+      - "traefik.http.services.app.loadbalancer.server.port=8000"  # Porta interna
+      - "estatcamp.url=https://app.docker.localhost"
     depends_on:
       - db
     networks:
@@ -70,7 +95,12 @@ services:
       - "80:80"
       - "443:443"
       - "8080:8080"
-      - "3306:3306"
+      # - "3306:3306"
+      - 5431:5432  # repare na porta externa 5431
+      - 1025:1025
+      - 8025:8025
+      - 5051:81
+      - 5053:8978
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${HOME}/.certs:/etc/certs:ro
@@ -78,7 +108,9 @@ services:
       - ${HOME}/.traefik/config.yml:/etc/traefik/config.yml:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.docker.localhost`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.tls=true"
     networks:
       - proxy
     depends_on:
@@ -86,7 +118,7 @@ services:
 
 
   cloudbeaver:
-    container_name: dicas_de_django_cloudbeaver
+    container_name: django_cloudbeaver
     image: dbeaver/cloudbeaver:latest
     volumes:
        - /var/cloudbeaver/workspace:/opt/cloudbeaver/workspace
