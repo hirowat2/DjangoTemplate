@@ -1,4 +1,4 @@
-# Dicas de Django
+# Action Demand Lean Driven
 
 https://www.dicas-de-django.com.br/
 
@@ -65,7 +65,7 @@ branch: `main_old`
 
 ## Leia o passo a passo
 
-[Dicas de Django antigas](https://github.com/rg3915/dicas-de-django/tree/master/docs)
+[Action Demand Lean Driven antigas](https://github.com/rg3915/dicas-de-django/tree/master/docs)
 
-[Dicas de Django novas](doc/)
+[Action Demand Lean Driven novas](doc/)
 

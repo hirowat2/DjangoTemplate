@@ -82,6 +82,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_absolute_url(self):
         return reverse_lazy('user_detail', kwargs={'pk': self.pk})
 
+    # Relacionamento com o modelo Profile
+    # profile = models.OneToOneField('Profile', on_delete=models.CASCADE, null=True, blank=True)
+
+    # def create_profile(self):
+    #     if not self.profile:
+    #         self.profile = Profile.objects.create(user=self)
+    #         self.save()
+
 
 @receiver(post_save, sender=User)
 def send_email_on_user_creation(sender, instance, created, **kwargs):
@@ -145,12 +153,18 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
+        # Profile.objects.create_profile(user=instance)
         Profile.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    if not hasattr(instance, 'profile'):
+        Profile.objects.create(user=instance)
+    else:
+        instance.profile.save()
+    # if instance.profile:
+    # instance.profile.save()
 
 
 class Document(TimeStampedModel):

@@ -19,7 +19,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': (
                 'is_active',
                 'is_admin',
-                # 'is_superuser',
+                'is_superuser',
                 'groups',
                 'user_permissions',
             )

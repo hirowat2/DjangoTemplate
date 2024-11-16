@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Dicas de Django](README.md)
+* [Action Demand Lean Driven](README.md)
 * [Dica 01 - Django boilerplate e cookiecutter-django](docs/00-django-boilerplate-e-cookiecutter-django.md)
 * [Dica 1.1 - Django boilerplate](docs/01-django-boilerplate.md)
 * [Dica 02 - Django extensions](docs/02-django-extensions.md)
