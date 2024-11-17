@@ -69,3 +69,4 @@ branch: `main_old`
 
 [Action Demand Lean Driven novas](doc/)
 
+# DjangoTemplate
