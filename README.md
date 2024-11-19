@@ -1,11 +1,12 @@
-# Action Demand Lean Driven
+# DjangoTemplate
+
+## Dica de python
 
 https://www.dicas-de-django.com.br/
 
-
 ## Este projeto foi feito com:
 
-* [Python 3.10.6](https://www.python.org/)
+* [Python 3.12](https://www.python.org/)
 * [Django 4.1.6](https://www.djangoproject.com/)
 * [TailwindCSS](https://tailwindcss.com/)
 * [htmx](https://htmx.org)
@@ -13,60 +14,34 @@ https://www.dicas-de-django.com.br/
 ## Como rodar o projeto?
 
 * Clone esse repositório.
-* Crie um virtualenv com Python 3.
-* Ative o virtualenv.
-* Instale as dependências.
-* Rode as migrações.
+* Crie um arquivo .env conforme infos abaixo
+
 
 ```
-git clone https://github.com/rg3915/dicas-de-django.git
-cd dicas-de-django
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python contrib/env_gen.py
+DEBUG=True
+SECRET_KEY=<gerar um token>
+ALLOWED_HOSTS=127.0.0.1,.localhost,0.0.0.0, app.docker.localhost
 
-# crie .env.docker
-
-cat << EOF > .env.docker
-POSTGRES_DB=dicas_de_django_db
+#DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/NAME
+#POSTGRES_DB=
 POSTGRES_USER=postgres
+# POSTGRES_PASSWORD=E_%ZKM1BkzCxt$DdePv?
 POSTGRES_PASSWORD=postgres
-DB_HOST=db
-DB_PORT=5432
-EOF
+#DB_HOST=localhost
 
-# Django docker
-docker-compose up --build -d
-
-docker container exec -it dicas_de_django_app python manage.py migrate
-docker container exec -it dicas_de_django_app python manage.py createsuperuser --email="admin@email.com"
-
-# Django local
-python manage.py migrate
-python manage.py createsuperuser --email="admin@email.com"
-python manage.py test
-python manage.py runserver
+DJANGO_SUPERUSER_PASSWORD=estatcamp123
+DEFAULT_FROM_EMAIL='from@example.com'
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST = 'mailhog'  # Nome do serviço MailHog no seu Docker Compose
+EMAIL_PORT = 1025  # Porta padrão do MailHog
+EMAIL_HOST_USER=
+EMAIL_HOST_PASSWORD=
+EMAIL_USE_TLS=True
 ```
 
 ### Makefile
 
 Para verifcar os comando disponiveis no Makefile no terminal, basta informar `make help`
 
-**Obs:** Deve ter o `rich` instalado (`pip install rich`). Ele já está contido no `requirements.txt` instalado na venv, basta ativa-la `source .venv/bin/activate`
 
 
-## branch antiga
-
-branch: `main_old`
-
-[Dicas 1 a 60](https://github.com/rg3915/dicas-de-django/tree/main_old)
-
-
-## Leia o passo a passo
-
-[Action Demand Lean Driven antigas](https://github.com/rg3915/dicas-de-django/tree/master/docs)
-
-[Action Demand Lean Driven novas](doc/)
-
-# DjangoTemplate

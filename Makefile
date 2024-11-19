@@ -3,8 +3,9 @@
 up: ## Starts ALL containers in the project
 	docker-compose up -d
 
-down: ## Starts ALL containers in the project
+run: ## Starts ALL containers in the project
 	docker-compose down
+	docker-compose up --build
 
 ## @ Format
 .PHONY: indenter autopep8 isort lint
