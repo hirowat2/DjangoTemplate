@@ -39,6 +39,8 @@ EMAIL_HOST_PASSWORD=
 EMAIL_USE_TLS=True
 ```
 
+* Este projeto já cria um superuser automático
+
 ### Makefile
 
 Para verifcar os comando disponiveis no Makefile no terminal, basta informar `make help`
