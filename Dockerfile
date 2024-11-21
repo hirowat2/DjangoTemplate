@@ -18,13 +18,13 @@ WORKDIR /app
 EXPOSE 8000
 
 RUN pip install --upgrade pip
-RUN [ "pip", "install", "--no-cache-dir", "poetry==1.8.4"]
+RUN [ "pip", "install", "--no-cache-dir", "poetry==1.8.4" ]
 
 COPY poetry.lock .
 COPY pyproject.toml .
 
 RUN [ "poetry", "config", "virtualenvs.create", "false"]
-RUN [ "poetry", "install", "--no-root", "--no-interaction", "--no-ansi" ]
+RUN [ "poetry", "install", "--no-root", "--no-interaction", "--no-ansi"]
 
 COPY manage.py .
 COPY backend backend

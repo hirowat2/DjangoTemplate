@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'import_export',
     # minhas apps
     'backend.core',
+    'backend.consume',
     'backend.bookstore',
     'backend.crm',
     'backend.expense',

@@ -1,4 +1,4 @@
-<!-- product_form.html -->
+<!-- consume_form.html -->
 {% extends "base.html" %}
 {% load widget_tweaks %}
 
@@ -36,17 +36,10 @@
             {% endfor %}
           {% endfor %}
 
-          <!-- <div class="flex items-start">
-              <div class="flex items-center h-5">
-                <input id="remember" aria-describedby="remember" name="remember" type="checkbox" class="bg-gray-50 border-gray-300 focus:ring-3 focus:ring-cyan-200 h-4 w-4 rounded">
-              </div>
-              <div class="text-sm ml-3">
-                <label for="remember" class="font-medium text-gray-900">Remember me</label>
-              </div>
-            </div> -->
+
           <div class="flex flex-col sm:flex-row">
             <button type="submit" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-base px-5 py-3 w-full sm:w-auto text-center">Salvar</button>
-            <a href="{% url 'product:product_list' %}" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-3 mt-2 sm:mt-0 sm:ml-2 w-full sm:w-auto text-center">
+            <a href="{% url 'consume:consume_list' %}" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-3 mt-2 sm:mt-0 sm:ml-2 w-full sm:w-auto text-center">
               Cancelar
             </a>
           </div>
