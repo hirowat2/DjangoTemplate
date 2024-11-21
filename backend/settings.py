@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'backend.expense',
     'backend.product',
     'backend.realty',
+    'backend.reposition',
     'backend.todo',
 ]
 
