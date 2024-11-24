@@ -1,13 +1,14 @@
 from django.db import models
 from django.urls import reverse_lazy
 from backend.core.models import TimeStampedModel
-
+from backend.product.models import Product  # Ajuste o caminho para o modelo Product
 
 class Reposition(TimeStampedModel):
-    # title = models.CharField('título', max_length=255, unique=True)
-    planta = models.CharField('planta', max_length=100, null=True, blank=True)
-    codigo = models.CharField('código', max_length=50, unique=True, default='default_codigo')
-    description = models.TextField('descrição', null=True, blank=True)
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='repositions',
+    )
     lt_pre_ordem = models.FloatField('lt pré ordem', null=True, blank=True)
     lt_ordem = models.FloatField('lt ordem', null=True, blank=True)
     lt_quarentena = models.FloatField('lt quarentena', null=True, blank=True)
@@ -20,12 +21,12 @@ class Reposition(TimeStampedModel):
     slug = models.SlugField(null=True, blank=True)
 
     class Meta:
-        ordering = ('planta',)
-        verbose_name = 'consumo'
-        verbose_name_plural = 'consumos'
+        ordering = ('product__title',)
+        verbose_name = 'reposição'
+        verbose_name_plural = 'reposições'
 
     def __str__(self):
-        return f'{self.planta}'
+        return f"{self.codigo} - {self.planta}"
 
     def get_absolute_url(self):
         return reverse_lazy('reposition:reposition_detail', kwargs={'pk': self.pk})
@@ -40,4 +41,3 @@ class Reposition(TimeStampedModel):
     @property
     def verbose_name_plural(self):
         return self._meta.verbose_name_plural
-

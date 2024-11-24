@@ -4,7 +4,7 @@ from import_export import resources
 from import_export.admin import ExportActionModelAdmin, ImportExportModelAdmin
 
 from .models import Reposition
-
+from backend.product.models import Product
 
 class RepositionResource(resources.ModelResource):
 
@@ -19,9 +19,7 @@ class RepositionAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
     readonly_fields = ('slug',)
 
     list_display = (
-        'planta',
-        'codigo',
-        'description',
+        'product',  # Adicionado para exibir o produto relacionado
         'lt_pre_ordem',
         'lt_ordem',
         'lt_quarentena',
@@ -30,18 +28,18 @@ class RepositionAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
         'lote_minimo_rep',
         'lote_multiplo_rep',
         'intervalo_reposicao',
-        'campanha_ideal')
+        'campanha_ideal',
+    )
 
 
-    list_filter = ('planta', 'codigo')
-    search_fields = ('planta', 'codigo')
+    list_filter = ('product__title',)  # Filtro baseado no título do produto
+    search_fields = ('product__title', 'codigo')  # Pesquisa pelo produto e código
     fieldsets = (
         (None, {
             'fields': ('planta', 'codigo')
         }),
         ('Informações adicionais', {
-            'fields': ("description",
-                       'lt_pre_ordem',
+            'fields': ('lt_pre_ordem',
                        'lt_ordem',
                        'lt_quarentena',
                        'lt_total',

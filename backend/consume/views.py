@@ -12,6 +12,8 @@ from .forms import ConsumeForm
 from .models import Consume
 from .services import csv_to_list_in_memory, save_data
 
+from backend.product.models import Product  # Ajuste o caminho para o modelo Product
+
 # class consumeListView(ListView):
 #     model = consume
 #     paginate_by = 5
@@ -25,10 +27,11 @@ def consume_list(request):
 
     if search:
         object_list = object_list.filter(
-            Q(title__icontains=search)
-            | Q(description__icontains=search)
-            | Q(category__title__icontains=search)
+            Q(product__title__icontains=search)
+            | Q(consumo_historico__icontains=search)
+            | Q(cv_diario__icontains=search)
         )
+
 
     # https://docs.djangoproject.com/en/4.1/topics/pagination/#using-paginator-in-a-view-function
     items_per_page = 10
@@ -56,7 +59,10 @@ def consume_create(request):
     form = ConsumeForm(request.POST or None)
 
     if request.method == 'POST' and form.is_valid():
-        form.save()
+        consume = form.save(commit=False)
+        # Defina o produto se ele não estiver no formulário
+        # consume.product = Product.objects.first()  # ou outro valor válido
+        consume.save()
         return redirect('consume:consume_list')
 
     verbose_name_plural = form.instance._meta.verbose_name_plural
@@ -102,7 +108,7 @@ def import_view(request):
         data = []
 
         for row in ws.iter_rows(min_row=2, max_row=max_row, max_col=max_col):
-            _dict = dict(title=row[0].value, price=row[1].value)
+            _dict = dict(title=row[0].value, price=row[1].value, product=Product.objects.get(title=title))
             data.append(_dict)
 
     save_data(data)
@@ -116,14 +122,14 @@ def export_csv(request):
 
         csv_writer.writerow(['title', 'price'])
         for consume in consumes:
-            csv_writer.writerow([consume.title, consume.price])
+            csv_writer.writerow([consume.consumo_historico, consume.demanda_dia_prev])
 
     return redirect('consume:consume_list')
 
 
 def export_xlsx(request):
     consumes = Consume.objects.all()
-    data = [(consume.title, consume.price) for consume in consumes]
+    data = [(consume.consumo_historico, consume.demanda_dia_prev) for consume in consumes]
     data.insert(0, ('title', 'price'))
 
     wb = Workbook()

@@ -1,6 +1,8 @@
 #!/bin/sh
 ./wait-for-it.sh db:3306 --timeout=60 --strict -- echo "MySQL is up"
 # python3 manage.py makemigrations
+python manage.py clear_cache  # If using Django cache system
+
 python3 manage.py makemigrations
 # Gere as migrações para o modelo de usuários
 python manage.py makemigrations accounts
@@ -27,7 +29,6 @@ try:
 except ObjectDoesNotExist:
     # Se o superusuário não existir, criar um novo
     User.objects.create_superuser(
-        user='$DJANGO_SUPERUSER_USERNAME',
         email='$DJANGO_SUPERUSER_EMAIL',
         password='$DJANGO_SUPERUSER_PASSWORD'
     )

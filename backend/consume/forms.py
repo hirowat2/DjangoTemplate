@@ -10,9 +10,7 @@ class ConsumeForm(forms.ModelForm):
         model = Consume
         # fields = ('title', 'description', 'category')
         fields = [
-            'planta',
-            'codigo',
-            'description',
+            'product',
             'consumo_historico',
             'cv_diario',
             'cv_periodo_lt',
@@ -21,9 +19,6 @@ class ConsumeForm(forms.ModelForm):
             'slug'
         ]
         widgets = {
-            'planta': forms.Select(attrs={'class': 'form-control'}) ,
-            'codigo': forms.Select(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'rows': 1, 'cols': 30}),
             'consumo_historico': forms.NumberInput(attrs={'min': '0'}),
             'cv_diario': forms.NumberInput(attrs={'min': '0'}),
             'cv_periodo_lt': forms.NumberInput(attrs={'min': '0'}),

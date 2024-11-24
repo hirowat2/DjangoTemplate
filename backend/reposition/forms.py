@@ -9,9 +9,6 @@ class RepositionForm(forms.ModelForm):
     class Meta:
         model = Reposition
         fields = [
-            'planta',
-            'codigo',
-            'description',
             'lt_pre_ordem',
             'lt_ordem',
             'lt_quarentena',
@@ -24,9 +21,6 @@ class RepositionForm(forms.ModelForm):
             'slug'
         ]
         widgets = {
-            'planta': forms.Select(attrs={'class': 'form-control'}) ,
-            'codigo': forms.Select(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'rows': 1, 'cols': 30}),
             'lt_pre_ordem': forms.NumberInput(attrs={'class': 'form-control'}),
             'lt_ordem': forms.NumberInput(attrs={'class': 'form-control'}),
             'lt_quarentena': forms.NumberInput(attrs={'class': 'form-control'}),
