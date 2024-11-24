@@ -9,6 +9,7 @@ class RepositionForm(forms.ModelForm):
     class Meta:
         model = Reposition
         fields = [
+            'product',
             'lt_pre_ordem',
             'lt_ordem',
             'lt_quarentena',
