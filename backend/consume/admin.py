@@ -17,7 +17,8 @@ def export_selected_as_csv(self, request, queryset):
     response['Content-Disposition'] = 'attachment; filename="consumes.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Produto', 'Consumo Histórico', 'CV Diário', 'Demanda Dia Prev'])
+    writer.writerow(['Produto', 'Consumo Histórico', 'CV Diário',
+                     'Demanda Dia Prev'])
     for consume in queryset:
         writer.writerow([
             consume.product.title, consume.consumo_historico,
@@ -49,30 +50,14 @@ class ConsumeAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
     resource_classes = [ConsumeResource]
 
     readonly_fields = ('slug',)
-
-    # list_display = ( "consumo_historico",
-    #                 "cv_diario", "cv_periodo_lt", "demanda_dia_prev", "fator_k")
-
-    list_display = ("product_title", "consumo_historico", "cv_diario", "cv_periodo_lt", "demanda_dia_prev", "fator_k")
+    list_display = ("product_title", "consumo_historico", "cv_diario",
+                    "cv_periodo_lt", "demanda_dia_prev", "fator_k")
 
     def product_title(self, obj):
         return obj.product.title
 
     product_title.short_description = 'Produto'
 
-
-
-    # list_filter = ('planta', 'codigo')
-    # search_fields = ('planta', 'codigo')
-    # fieldsets = (
-    #     # (None, {
-    #     #     'fields': ('planta', 'codigo')
-    #     # }),
-    #     ('Informações adicionais', {
-    #         'fields': ("consumo_historico",
-    #                 "cv_diario", "cv_periodo_lt", "demanda_dia_prev", "fator_k")
-    #     }),
-    # )
     list_filter = ('product',)
 
     fieldsets = (

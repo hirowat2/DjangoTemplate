@@ -27,7 +27,7 @@ def product_list(request):
         object_list = object_list.filter(
             Q(title__icontains=search)
             | Q(description__icontains=search)
-            | Q(category__title__icontains=search)
+            | Q(tipo_producao__title__icontains=search)
         )
 
     # https://docs.djangoproject.com/en/4.1/topics/pagination/#using-paginator-in-a-view-function

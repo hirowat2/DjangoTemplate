@@ -10,7 +10,6 @@ class ConsumeForm(forms.ModelForm):
         model = Consume
         # fields = ('title', 'description', 'category')
         fields = [
-            'product',
             'consumo_historico',
             'cv_diario',
             'cv_periodo_lt',
