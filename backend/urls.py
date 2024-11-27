@@ -9,6 +9,7 @@ urlpatterns = [
     path('expense/', include('backend.expense.urls', namespace='expense')),  # noqa E501
     path('product/', include('backend.product.urls', namespace='product')),  # noqa E501
     path('consume/', include('backend.consume.urls', namespace='consume')),  # noqa E501
+    path('prateleira/', include('backend.prateleira.urls', namespace='prateleira')),  # noqa E501
     path('reposition/', include('backend.reposition.urls', namespace='reposition')),  # noqa E501
     path('todo/', include('backend.todo.urls', namespace='todo')),  # noqa E501
     path('admin/', admin.site.urls),  # noqa E501

@@ -1,9 +1,9 @@
-# Consume/admin.py
+# prateleira/admin.py
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ExportActionModelAdmin, ImportExportModelAdmin
 
-from .models import Consume
+from .models import Prateleira
 
 from import_export.fields import Field
 from backend.product.models import Product  # Ajuste o caminho para o modelo Product
@@ -11,31 +11,31 @@ from django.utils.text import slugify
 from django.http import HttpResponse
 import csv
 
-@admin.action(description="Exportar consumos selecionados como CSV")
+@admin.action(description="Exportar prateleiras selecionados como CSV")
 def export_selected_as_csv(self, request, queryset):
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="consumes.csv"'
+    response['Content-Disposition'] = 'attachment; filename="prateleiras.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Produto', 'Consumo Histórico', 'CV Diário',
+    writer.writerow(['Produto', 'prateleira Histórico', 'CV Diário',
                      'Demanda Dia Prev'])
-    for consume in queryset:
+    for prateleira in queryset:
         writer.writerow([
-            consume.product.title, consume.consumo_historico,
-            consume.cv_diario, consume.demanda_dia_prev
+            prateleira.product.title, prateleira.prateleira_historico,
+            prateleira.cv_diario, prateleira.demanda_dia_prev
         ])
 
     return response
 
 
-class ConsumeResource(resources.ModelResource):
+class PrateleiraResource(resources.ModelResource):
     product = Field(attribute='product', column_name='product_title')
 
     class Meta:
-        model = Consume
-        fields = ('product', 'consumo_historico', 'cv_diario', 'cv_periodo_lt',
+        model = Prateleira
+        fields = ('product', 'prateleira_historico', 'cv_diario', 'cv_periodo_lt',
                   'demanda_dia_prev', 'fator_k')
-        export_order = ('product', 'consumo_historico', 'cv_diario',
+        export_order = ('product', 'prateleira_historico', 'cv_diario',
                         'cv_periodo_lt', 'demanda_dia_prev', 'fator_k')
 
     def before_import_row(self, row, **kwargs):
@@ -45,12 +45,12 @@ class ConsumeResource(resources.ModelResource):
 
 
 
-@admin.register(Consume)
-class ConsumeAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
-    resource_classes = [ConsumeResource]
+@admin.register(Prateleira)
+class PrateleiraAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
+    resource_classes = [PrateleiraResource]
 
     readonly_fields = ('slug',)
-    list_display = ("product_title", "consumo_historico", "cv_diario",
+    list_display = ("product_title", "prateleira_historico", "cv_diario",
                     "cv_periodo_lt", "demanda_dia_prev", "fator_k")
 
     def product_title(self, obj):
@@ -70,12 +70,20 @@ class ConsumeAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
             'planta',
             'codigo',
             'descricao',
-            'consumo_historico',
-            'cv_diario',
-            'cv_periodo_lt',
-            'demanda_dia_prev',
-            'fator_k',
-            'menor_lote_consumo',
+            'formula_calculo',
+            'reserva_historico',
+            'inicio_reserva',
+            'fim_reserva',
+            'reserva',
+            'segurança',
+            'pulmao',
+            'ciclo',
+            'dep_maximo',
+            'dep_medio',
+            'quarentena',
+            'transito',
+            'prateleira_total',
+            'pto_reposicao',
             )
         }),
         ('Slug', {

@@ -15,11 +15,15 @@ class Consume(TimeStampedModel):
     )
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    planta = models.CharField(('planta'), max_length=150, blank=True)
+    codigo = models.CharField(('código'), max_length=150, blank=True)
+    descricao = models.CharField('descrição', max_length=150, blank=True)
     consumo_historico = models.FloatField('consumo histórico', null=True, blank=True)
     cv_diario = models.FloatField('cv diário', null=True, blank=True)
     cv_periodo_lt = models.FloatField('cv período lt', null=True, blank=True)
     demanda_dia_prev = models.FloatField('demanda dia prev', null=True, blank=True)
     fator_k = models.FloatField('fator k', null=True, blank=True)
+    menor_lote_consumo = models.FloatField('menor lote consumo', null=True, blank=True)
     slug = models.SlugField(null=True, blank=True)
 
     class Meta:

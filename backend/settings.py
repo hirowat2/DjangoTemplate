@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # minhas apps
     'backend.core',
     'backend.consume',
+    'backend.prateleira',
     'backend.bookstore',
     'backend.crm',
     'backend.expense',
