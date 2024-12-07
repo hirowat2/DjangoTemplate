@@ -62,6 +62,35 @@
             </ul>
           </li>
 
+          <li>
+            <button type="button" class="w-full text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group" aria-expanded="false" data-dropdown-toggle="submenu-estoque">
+              <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 5h12v2H4V5zM4 9h12v2H4V9zM4 13h12v2H4v-2z"></path>
+              </svg>
+              <span class="ml-3 flex-1 whitespace-nowrap">Estoque</span>
+              <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75 ml-auto" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.293 9.293a1 1 0 011.414 0L10 12.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+              </svg>
+            </button>
+            <ul id="submenu-estoque" class="hidden pl-10 mt-1 space-y-2">
+              <li>
+                <a href="{% url 'product:product_list' %}" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group">
+                  <span>Dados Básicos</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'consume:consume_list' %}" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group">
+                  <span>Consumo</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'reposition:reposition_list' %}" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group">
+                  <span>Reposição</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
 
           <!-- <li>
             <a href="{% url 'product:product_list' %}" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group ">

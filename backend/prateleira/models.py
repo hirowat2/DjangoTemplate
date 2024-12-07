@@ -9,16 +9,10 @@ class Prateleira(TimeStampedModel):
         on_delete=models.CASCADE,
         null=False,  # ou default configurado, se necessário
         blank=False,  # para garantir que seja obrigatório no formulário
-        # ,
-        # verbose_name='produto',
-        # related_name='prateleiras',
     )
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    planta = models.CharField(('planta'), max_length=150, blank=True)
-    codigo = models.CharField(('código'), max_length=150, blank=True)
-    descricao = models.CharField('descrição', max_length=150, blank=True)
-    formula_calculo = models.FloatField('formula calculo', null=True, blank=True)
+    formula_calculo = models.CharField('formula calculo', max_length=100, null=True, blank=True)
     reserva_historico = models.FloatField('reserva historico', null=True, blank=True)
     inicio_reserva = models.FloatField('inicio reserva', null=True, blank=True)
     fim_reserva = models.FloatField('fim reserva', null=True, blank=True)
@@ -40,7 +34,7 @@ class Prateleira(TimeStampedModel):
         verbose_name_plural = 'prateleiras'
 
     def __str__(self):
-        return f'{self.product.title}'
+      return f'{self.product.codigo} | {self.product.planta} | {self.product.title}'
 
     def get_absolute_url(self):
         return reverse_lazy('prateleira:prateleira_detail', kwargs={'pk': self.pk})

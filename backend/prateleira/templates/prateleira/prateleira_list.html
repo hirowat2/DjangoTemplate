@@ -7,7 +7,7 @@
     <div class="mb-1 w-full">
       <div class="mb-4">
         {% include "includes/breadcrumb.html" %}
-        <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">Consumo</h1>
+        <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">Prateleira</h1>
       </div>
       <div class="sm:flex">
         {% include "includes/search.html" %}
@@ -52,7 +52,7 @@
                   Descrição
                 </th>
                 <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                  Consumo Histórico
+                  Prateleira Histórico
                 </th>
                 <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                   CV Diário
@@ -83,7 +83,7 @@
                       <div class="text-sm font-normal text-gray-500">{{ object.product }}</div>
                     </div>
                   </td>
-                  <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ object.consumo_historico|truncatechars:"50"|default:"---" }}</td>
+                  <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ object.prateleira_historico|truncatechars:"50"|default:"---" }}</td>
                   <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ object.cv_diario|default:"---" }}</td>
                   <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ object.demanda_dia_prev|default:"---" }}</td>
                   <td class="p-4 whitespace-nowrap space-x-2">

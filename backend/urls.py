@@ -1,5 +1,13 @@
 from django.contrib import admin
 from django.urls import include, path
+from ninja import NinjaAPI
+from backend.product.api import router as product_router  # Ajuste o caminho
+
+# Criação da instância da API
+api = NinjaAPI()
+
+api.add_router("/products/", product_router)
+
 
 urlpatterns = [
     path('', include('backend.core.urls', namespace='core')),  # noqa E501
@@ -12,5 +20,6 @@ urlpatterns = [
     path('prateleira/', include('backend.prateleira.urls', namespace='prateleira')),  # noqa E501
     path('reposition/', include('backend.reposition.urls', namespace='reposition')),  # noqa E501
     path('todo/', include('backend.todo.urls', namespace='todo')),  # noqa E501
+    path("api/", api.urls), # noqa E501
     path('admin/', admin.site.urls),  # noqa E501
 ]

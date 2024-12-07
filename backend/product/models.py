@@ -36,6 +36,17 @@ class tipo_embalagem(models.Model):
     def __str__(self):
         return f'{self.title}'
 
+class segmentation(models.Model):
+    title = models.CharField('título', max_length=255, unique=True)
+
+    class Meta:
+        ordering = ('title',)
+        verbose_name = 'segmentation'
+        verbose_name_plural = 'segmentation'
+
+    def __str__(self):
+        return f'{self.title}'
+
 class Product(TimeStampedModel):
     title = models.CharField('título', max_length=255, unique=True)
     description = models.TextField('descrição', null=True, blank=True)
@@ -64,6 +75,14 @@ class Product(TimeStampedModel):
         null=True,
         blank=True,
     )
+    segmentation = models.ForeignKey(
+        'segmentation',
+        on_delete=models.SET_NULL,
+        verbose_name='segmentation',
+        related_name='products',
+        null=True,
+        blank=True,
+    )
     slug = models.SlugField(null=True, blank=True)
 
     # Novos campos adicionados
@@ -82,7 +101,8 @@ class Product(TimeStampedModel):
         verbose_name_plural = 'produtos'
 
     def __str__(self):
-        return f'{self.title}'
+        # return f'{self.codigo} | {self.planta} | {self.title}'
+        return f'{self.codigo}'
 
     def get_absolute_url(self):
         return reverse_lazy('product:product_detail', kwargs={'pk': self.pk})

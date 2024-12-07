@@ -87,7 +87,7 @@ def consume_update(request, pk):
 
 
 def consume_delete(request, pk):
-    instance = get_object_or_404(consume, pk=pk)
+    instance = get_object_or_404(Consume, pk=pk)
     instance.delete()
     return redirect('consume:consume_list')
 

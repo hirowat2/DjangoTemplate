@@ -7,32 +7,31 @@ class Consume(TimeStampedModel):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        null=False,  # ou default configurado, se necessário
-        blank=False,  # para garantir que seja obrigatório no formulário
-        # ,
-        # verbose_name='produto',
-        # related_name='consumos',
+        # null=False,
+        # blank=False,
+        # related_name='consumos',  # Acesso inverso no produto
     )
+
+
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    planta = models.CharField(('planta'), max_length=150, blank=True)
-    codigo = models.CharField(('código'), max_length=150, blank=True)
-    descricao = models.CharField('descrição', max_length=150, blank=True)
     consumo_historico = models.FloatField('consumo histórico', null=True, blank=True)
     cv_diario = models.FloatField('cv diário', null=True, blank=True)
     cv_periodo_lt = models.FloatField('cv período lt', null=True, blank=True)
     demanda_dia_prev = models.FloatField('demanda dia prev', null=True, blank=True)
     fator_k = models.FloatField('fator k', null=True, blank=True)
     menor_lote_consumo = models.FloatField('menor lote consumo', null=True, blank=True)
-    slug = models.SlugField(null=True, blank=True)
+    slug = models.SlugField('slug de consumo', null=True, blank=True)
+
 
     class Meta:
-        ordering = ('product__title',)
+        ordering = ('product',)
+        # ordering = ('product__title',)
         verbose_name = 'consumo'
         verbose_name_plural = 'consumos'
 
     def __str__(self):
-        return f'{self.product.title}'
+        return f'{self.product.codigo}'
 
     def get_absolute_url(self):
         return reverse_lazy('consume:consume_detail', kwargs={'pk': self.pk})

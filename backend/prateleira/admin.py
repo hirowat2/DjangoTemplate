@@ -33,10 +33,36 @@ class PrateleiraResource(resources.ModelResource):
 
     class Meta:
         model = Prateleira
-        fields = ('product', 'prateleira_historico', 'cv_diario', 'cv_periodo_lt',
-                  'demanda_dia_prev', 'fator_k')
-        export_order = ('product', 'prateleira_historico', 'cv_diario',
-                        'cv_periodo_lt', 'demanda_dia_prev', 'fator_k')
+        fields = ('product',
+            'formula_calculo',
+            'reserva_historico',
+            'inicio_reserva',
+            'fim_reserva',
+            'reserva',
+            'segurança',
+            'pulmao',
+            'ciclo',
+            'dep_maximo',
+            'dep_medio',
+            'quarentena',
+            'transito',
+            'prateleira_total',
+            'pto_reposicao',)
+        export_order = ('product',
+            'formula_calculo',
+            'reserva_historico',
+            'inicio_reserva',
+            'fim_reserva',
+            'reserva',
+            'segurança',
+            'pulmao',
+            'ciclo',
+            'dep_maximo',
+            'dep_medio',
+            'quarentena',
+            'transito',
+            'prateleira_total',
+            'pto_reposicao',)
 
     def before_import_row(self, row, **kwargs):
         # Buscar o produto pelo título antes de salvar
@@ -50,8 +76,21 @@ class PrateleiraAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
     resource_classes = [PrateleiraResource]
 
     readonly_fields = ('slug',)
-    list_display = ("product_title", "prateleira_historico", "cv_diario",
-                    "cv_periodo_lt", "demanda_dia_prev", "fator_k")
+    list_display = ("product_title",
+            'formula_calculo',
+            'reserva_historico',
+            'inicio_reserva',
+            'fim_reserva',
+            'reserva',
+            'segurança',
+            'pulmao',
+            'ciclo',
+            'dep_maximo',
+            'dep_medio',
+            'quarentena',
+            'transito',
+            'prateleira_total',
+            'pto_reposicao',)
 
     def product_title(self, obj):
         return obj.product.title
@@ -66,10 +105,6 @@ class PrateleiraAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
         }),
         ('Informações adicionais', {
             'fields': (
-            'product',
-            'planta',
-            'codigo',
-            'descricao',
             'formula_calculo',
             'reserva_historico',
             'inicio_reserva',

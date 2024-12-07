@@ -103,6 +103,7 @@ def import_view(request):
 
         for row in ws.iter_rows(min_row=2, max_row=max_row, max_col=max_col):
             _dict = dict(title=row[0].value, price=row[1].value)
+            print(data.append(_dict))
             data.append(_dict)
 
     save_data(data)

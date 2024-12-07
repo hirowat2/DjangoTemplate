@@ -11,9 +11,6 @@ class PrateleiraForm(forms.ModelForm):
         # fields = ('title', 'description', 'category')
         fields = [
             'product',
-            'planta',
-            'codigo',
-            'descricao',
             'formula_calculo',
             'reserva_historico',
             'inicio_reserva',
@@ -31,9 +28,6 @@ class PrateleiraForm(forms.ModelForm):
             'slug'
         ]
         widgets = {
-            'planta': forms.Textarea(attrs={'rows': 1, 'cols': 30}),
-            'codigo': forms.Textarea(attrs={'rows': 1, 'cols': 30}),
-            'descricao': forms.Textarea(attrs={'rows': 1, 'cols': 30}),
             'formula_calculo': forms.NumberInput(attrs={'min': '0'}),
             'reserva_historico': forms.NumberInput(attrs={'min': '0'}),
             'inicio_reserva': forms.NumberInput(attrs={'min': '0'}),
@@ -48,6 +42,5 @@ class PrateleiraForm(forms.ModelForm):
             'transito': forms.NumberInput(attrs={'min': '0'}),
             'prateleira_total': forms.NumberInput(attrs={'min': '0'}),
             'pto_reposicao': forms.NumberInput(attrs={'min': '0'}),
-            'slug': forms.NumberInput(attrs={'min': '0'})
 
         }

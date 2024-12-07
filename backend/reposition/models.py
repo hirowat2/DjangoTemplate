@@ -9,7 +9,6 @@ class Reposition(TimeStampedModel):
         on_delete=models.CASCADE,
         null=False,  # ou default configurado, se necessário
         blank=False,  # para garantir que seja obrigatório no formulário
-        related_name='repositions',
     )
     lt_pre_ordem = models.FloatField('lt pré ordem', null=True, blank=True)
     lt_ordem = models.FloatField('lt ordem', null=True, blank=True)
@@ -28,7 +27,7 @@ class Reposition(TimeStampedModel):
         verbose_name_plural = 'reposições'
 
     def __str__(self):
-        return f'{self.product.title}'
+      return f'{self.product.codigo} | {self.product.planta} | {self.product.title}'
 
     def get_absolute_url(self):
         return reverse_lazy('reposition:reposition_detail', kwargs={'pk': self.pk})

@@ -17,8 +17,7 @@ def export_selected_as_csv(self, request, queryset):
     response['Content-Disposition'] = 'attachment; filename="consumes.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Produto', 'Consumo Histórico', 'CV Diário',
-                     'Demanda Dia Prev'])
+    writer.writerow(['Produto', 'Consumo Histórico', 'CV Diário', 'Demanda Dia Prev'])
     for consume in queryset:
         writer.writerow([
             consume.product.title, consume.consumo_historico,
@@ -29,19 +28,54 @@ def export_selected_as_csv(self, request, queryset):
 
 
 class ConsumeResource(resources.ModelResource):
-    product = Field(attribute='product', column_name='product_title')
+    # product = Field(attribute='product', column_name='product_title')
+    product = Field(attribute='product', column_name='codigo')
 
     class Meta:
         model = Consume
+        import_id_fields = ['product']
         fields = ('product', 'consumo_historico', 'cv_diario', 'cv_periodo_lt',
-                  'demanda_dia_prev', 'fator_k')
+                  'demanda_dia_prev', 'fator_k', 'menor_lote_consumo')
         export_order = ('product', 'consumo_historico', 'cv_diario',
-                        'cv_periodo_lt', 'demanda_dia_prev', 'fator_k')
+                        'cv_periodo_lt', 'demanda_dia_prev', 'fator_k', 'menor_lote_consumo')
+
+    # def before_import_row(self, row, **kwargs):
+    #     # Buscar o produto pelo título antes de salvar
+    #     # product_title = row.get('product_title')
+    #     product_title = row.get('codigo')
+    #     row['product'] = Product.objects.filter(title=product_title).first()
 
     def before_import_row(self, row, **kwargs):
-        # Buscar o produto pelo título antes de salvar
-        product_title = row.get('product_title')
-        row['product'] = Product.objects.filter(title=product_title).first()
+        # Pegando o código do produto da linha
+        product_codigo = str(row.get('codigo', '').strip())  # Garantir que o código seja uma string
+        print(f"Processando produto com código: {product_codigo}")
+
+        # Buscar o produto no banco de dados com base no código
+        product = Product.objects.filter(codigo=product_codigo).first()
+        print(f"Get produto com código: {product}")
+        # Criar uma instância de Consume associando o produto
+        consume_instance = Consume.objects.create(product=product)
+
+        # Verificar se o produto foi associado corretamente
+        print(consume_instance.product)  # Deve imprimir a instância do produto, algo como <Product: 19225>
+
+
+        if product:
+            # Atribuir a instância do produto ao campo 'product' (não o código)
+            # Verifique se product é uma instância de Product
+            print(f"Produto encontrado: {product}, Tipo de produto: {type(product)}")
+            row['product'] = product  # Aqui você está atribuindo a instância do Product
+            print(f"Produto encontrado: {product}")
+        else:
+            print(f"Produto com código '{product_codigo}' não encontrado. Linha ignorada.")
+            row['product'] = None  # A linha será ignorada, pois o produto não foi encontrado
+
+            # Se você preferir interromper a importação ao não encontrar o produto:
+            # raise ValueError(f"Produto com código '{product_codigo}' não encontrado.")
+
+
+
+
 
 
 
@@ -50,14 +84,32 @@ class ConsumeAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
     resource_classes = [ConsumeResource]
 
     readonly_fields = ('slug',)
-    list_display = ("product_title", "consumo_historico", "cv_diario",
-                    "cv_periodo_lt", "demanda_dia_prev", "fator_k")
+
+    # list_display = ( "consumo_historico",
+    #                 "cv_diario", "cv_periodo_lt", "demanda_dia_prev", "fator_k")
+
+    list_display = ("product_title", "consumo_historico", "cv_diario", "cv_periodo_lt", "demanda_dia_prev", "fator_k", "menor_lote_consumo")
+    # list_display = ("product", "consumo_historico", "cv_diario", "cv_periodo_lt", "demanda_dia_prev", "fator_k", "menor_lote_consumo")
 
     def product_title(self, obj):
+        # return obj.product
         return obj.product.title
 
     product_title.short_description = 'Produto'
 
+
+
+    # list_filter = ('planta', 'codigo')
+    # search_fields = ('planta', 'codigo')
+    # fieldsets = (
+    #     # (None, {
+    #     #     'fields': ('planta', 'codigo')
+    #     # }),
+    #     ('Informações adicionais', {
+    #         'fields': ("consumo_historico",
+    #                 "cv_diario", "cv_periodo_lt", "demanda_dia_prev", "fator_k")
+    #     }),
+    # )
     list_filter = ('product',)
 
     fieldsets = (
@@ -66,16 +118,8 @@ class ConsumeAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
         }),
         ('Informações adicionais', {
             'fields': (
-            'product',
-            'planta',
-            'codigo',
-            'descricao',
-            'consumo_historico',
-            'cv_diario',
-            'cv_periodo_lt',
-            'demanda_dia_prev',
-            'fator_k',
-            'menor_lote_consumo',
+                "consumo_historico", "cv_diario", "cv_periodo_lt",
+                "demanda_dia_prev", "fator_k", "menor_lote_consumo"
             )
         }),
         ('Slug', {
@@ -84,7 +128,8 @@ class ConsumeAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
         }),
     )
 
-    search_fields = ('product__title',)
+    # search_fields = ('product__title',)
+    search_fields = ('product__title', 'product__codigo')
 
     # Personalizando como os campos são exibidos no formulário de edição
     def save_model(self, request, obj, form, change):

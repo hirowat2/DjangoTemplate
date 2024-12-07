@@ -14,7 +14,7 @@ class ProductForm(forms.ModelForm):
             'un_estoque', 'tipo_embalagem',
             'slug', 'planta',
             'codigo', 'novo_codigo', 'data_validade', 'quantidade_un_embalagem',
-            'quantidade_embalagem_un_armazenamento', 'codigo_predecessor', 'custo_unitario'
+            'quantidade_embalagem_un_armazenamento', 'codigo_predecessor', 'custo_unitario', 'segmentation'
         ]
         widgets = {
             'description': forms.Textarea(attrs={'rows': 1, 'cols': 30}),
