@@ -50,7 +50,7 @@ class segmentation(models.Model):
 class Product(TimeStampedModel):
     title = models.CharField('título', max_length=255, unique=True)
     description = models.TextField('descrição', null=True, blank=True)
-    price = models.DecimalField('preço', max_digits=9, decimal_places=2, null=True, blank=True)
+    price = models.DecimalField('custo unitário', max_digits=9, decimal_places=2, null=True, blank=True)
     category = models.ForeignKey(
         'Category',
         on_delete=models.SET_NULL,
@@ -93,7 +93,7 @@ class Product(TimeStampedModel):
     quantidade_un_embalagem = models.PositiveIntegerField('quantidade un embalagem', null=True, blank=True)
     quantidade_embalagem_un_armazenamento = models.PositiveIntegerField('quantidade embalagem un armazenamento', null=True, blank=True)
     codigo_predecessor = models.CharField('código predecessor', max_length=50, null=True, blank=True)
-    custo_unitario = models.DecimalField('custo unitário', max_digits=9, decimal_places=2, null=True, blank=True)
+    # custo_unitario = models.DecimalField('custo unitário', max_digits=9, decimal_places=2, null=True, blank=True)
 
     class Meta:
         ordering = ('title',)

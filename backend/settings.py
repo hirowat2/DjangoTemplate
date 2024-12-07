@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_seed',
     'import_export',
+    'rest_framework',
     # minhas apps
     'backend.core',
     'backend.consume',

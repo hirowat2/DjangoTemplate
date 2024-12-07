@@ -7,11 +7,11 @@ class Consume(TimeStampedModel):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        # null=False,
+        related_name='consumos',
+        # null=True,
         # blank=False,
         # related_name='consumos',  # Acesso inverso no produto
     )
-
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

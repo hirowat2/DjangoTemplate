@@ -11,6 +11,7 @@ python manage.py makemigrations accounts
 # python3 manage.py migrate && python manage.py createsuperuser --noinput || true
 # Executar as migrações do banco de dados
 echo "Executando migrações..."
+python3 manage.py makemigrations
 python3 manage.py migrate
 
 # Criar o superusuário automaticamente, se não existir

@@ -6,9 +6,11 @@ from import_export.admin import ExportActionModelAdmin, ImportExportModelAdmin
 from .models import Consume
 
 from import_export.fields import Field
+from import_export.widgets import ForeignKeyWidget
 from backend.product.models import Product  # Ajuste o caminho para o modelo Product
 from django.utils.text import slugify
 from django.http import HttpResponse
+
 import csv
 
 @admin.action(description="Exportar consumos selecionados como CSV")
@@ -29,12 +31,12 @@ def export_selected_as_csv(self, request, queryset):
 
 class ConsumeResource(resources.ModelResource):
     # product = Field(attribute='product', column_name='product_title')
-    product = Field(attribute='product', column_name='codigo')
+    product = Field(attribute='product', column_name='codigo', widget=ForeignKeyWidget(Product, 'codigo'))
 
     class Meta:
         model = Consume
-        import_id_fields = ['product']
-        fields = ('product', 'consumo_historico', 'cv_diario', 'cv_periodo_lt',
+        import_id_fields = ['id']
+        fields = ('id','product', 'consumo_historico', 'cv_diario', 'cv_periodo_lt',
                   'demanda_dia_prev', 'fator_k', 'menor_lote_consumo')
         export_order = ('product', 'consumo_historico', 'cv_diario',
                         'cv_periodo_lt', 'demanda_dia_prev', 'fator_k', 'menor_lote_consumo')
@@ -45,39 +47,36 @@ class ConsumeResource(resources.ModelResource):
     #     product_title = row.get('codigo')
     #     row['product'] = Product.objects.filter(title=product_title).first()
 
-    def before_import_row(self, row, **kwargs):
-        # Pegando o código do produto da linha
-        product_codigo = str(row.get('codigo', '').strip())  # Garantir que o código seja uma string
-        print(f"Processando produto com código: {product_codigo}")
+    # def before_import_row(self, row, **kwargs):
+    #     # Pegando o código do produto da linha
+    #     product_codigo = str(row.get('codigo', '').strip())  # Garantir que o código seja uma string
+    #     print(f"Processando produto com código: {product_codigo}")
 
-        # Buscar o produto no banco de dados com base no código
-        product = Product.objects.filter(codigo=product_codigo).first()
-        print(f"Get produto com código: {product}")
-        # Criar uma instância de Consume associando o produto
-        consume_instance = Consume.objects.create(product=product)
+    #     # Buscar o produto no banco de dados com base no código
+    #     product = Product.objects.filter(codigo=product_codigo).first()
+    #     print(f"Get produto com código: {product}")
+    #     # Criar uma instância de Consume associando o produto
+    #     consume_instance = Consume.objects.create(product=product)
 
-        # Verificar se o produto foi associado corretamente
-        print(consume_instance.product)  # Deve imprimir a instância do produto, algo como <Product: 19225>
-
-
-        if product:
-            # Atribuir a instância do produto ao campo 'product' (não o código)
-            # Verifique se product é uma instância de Product
-            print(f"Produto encontrado: {product}, Tipo de produto: {type(product)}")
-            row['product'] = product  # Aqui você está atribuindo a instância do Product
-            print(f"Produto encontrado: {product}")
-        else:
-            print(f"Produto com código '{product_codigo}' não encontrado. Linha ignorada.")
-            row['product'] = None  # A linha será ignorada, pois o produto não foi encontrado
-
-            # Se você preferir interromper a importação ao não encontrar o produto:
-            # raise ValueError(f"Produto com código '{product_codigo}' não encontrado.")
+    #     # Verificar se o produto foi associado corretamente
+    #     print(consume_instance.product)  # Deve imprimir a instância do produto, algo como <Product: 19225>
 
 
+    #     if product:
+    #         # Atribuir a instância do produto ao campo 'product' (não o código)
+    #         # Verifique se product é uma instância de Product]
+    #         # consume_instance.product = product
 
+    #         print(f"Produto encontrado: {product}, Tipo de produto: {type(product)}")
+    #         row['product'] = product  # Aqui você está atribuindo a instância do Product
+    #         print(f"Produto encontrado: {product}")
+    #         return row
+    #     else:
+    #         print(f"Produto com código '{product_codigo}' não encontrado. Linha ignorada.")
+    #         row['product'] = None  # A linha será ignorada, pois o produto não foi encontrado
 
-
-
+    #         # Se você preferir interromper a importação ao não encontrar o produto:
+    #         raise ValueError(f"Produto com código '{product_codigo}' não encontrado.")
 
 @admin.register(Consume)
 class ConsumeAdmin(ImportExportModelAdmin, ExportActionModelAdmin):

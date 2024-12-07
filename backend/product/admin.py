@@ -52,7 +52,7 @@ class ProductAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
     list_display = (
         'title', 'category', 'un_estoque', 'tipo_embalagem','codigo', 'novo_codigo', 'data_validade',
         'quantidade_un_embalagem', 'quantidade_embalagem_un_armazenamento',
-        'codigo_predecessor', 'custo_unitario', 'planta', 'slug', 'segmentation'
+        'codigo_predecessor', 'price', 'planta', 'slug', 'segmentation'
     )
     list_filter = ('category', 'data_validade', 'planta', 'un_estoque', 'tipo_embalagem', 'segmentation')
     search_fields = ('title', 'codigo', 'novo_codigo', 'codigo_predecessor')
@@ -63,7 +63,7 @@ class ProductAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
         ('Informações adicionais', {
             'fields': ('planta', 'codigo', 'novo_codigo', 'data_validade',
                        'quantidade_un_embalagem', 'quantidade_embalagem_un_armazenamento',
-                       'codigo_predecessor', 'custo_unitario')
+                       'codigo_predecessor', 'price')
         }),
     )
 

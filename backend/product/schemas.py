@@ -52,7 +52,7 @@ class ProductSchema(Schema):
     quantidade_un_embalagem: Optional[int] = None
     quantidade_embalagem_un_armazenamento: Optional[int] = None
     codigo_predecessor: Optional[str] = None
-    custo_unitario: Optional[float] = None
+    # custo_unitario: Optional[float] = None
 
 # class ProductSchema(BaseModel):
 #     id: int

@@ -8,7 +8,6 @@ api = NinjaAPI()
 
 api.add_router("/products/", product_router)
 
-
 urlpatterns = [
     path('', include('backend.core.urls', namespace='core')),  # noqa E501
     path('accounts/', include('backend.accounts.urls')),  # noqa E501

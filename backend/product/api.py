@@ -26,7 +26,7 @@ def list_products(request):
             quantidade_un_embalagem=product.quantidade_un_embalagem,
             quantidade_embalagem_un_armazenamento=product.quantidade_embalagem_un_armazenamento,
             codigo_predecessor=product.codigo_predecessor,
-            custo_unitario=product.custo_unitario,
+            # custo_unitario=product.custo_unitario,
         )
         for product in products
     ]

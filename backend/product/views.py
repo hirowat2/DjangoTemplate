@@ -11,6 +11,13 @@ from pyexcelerate import Workbook
 from .forms import ProductForm
 from .models import Product
 from .services import csv_to_list_in_memory, save_data
+from rest_framework import viewsets
+from .models import Product
+from .serializers import ProductSerializer
+
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 # class ProductListView(ListView):
 #     model = Product

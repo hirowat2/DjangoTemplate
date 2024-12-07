@@ -18,6 +18,7 @@ WORKDIR /app
 EXPOSE 8000
 
 RUN pip install --upgrade pip
+
 RUN [ "pip", "install", "--no-cache-dir", "poetry==1.8.4" ]
 
 COPY poetry.lock .
