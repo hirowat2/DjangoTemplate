@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_seed',
     'import_export',
     'rest_framework',
+    'crispy_forms',
     # minhas apps
     'backend.core',
     'backend.consume',
@@ -173,3 +174,5 @@ CSRF_TRUSTED_ORIGINS = [
     'https://app.docker.localhost',  # Adicione o domínio aqui
     # Outros domínios confiáveis, se necessário
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'  # ou 'bootstrap5'
