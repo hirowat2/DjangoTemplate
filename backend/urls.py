@@ -9,6 +9,8 @@ api = NinjaAPI()
 api.add_router("/products/", product_router)
 
 urlpatterns = [
+    # path('grappelli/', include('grappelli.urls')),  # noqa E501
+    # path('jazzmin/', include('jazzmin.urls')),  # noqa E501
     path('', include('backend.core.urls', namespace='core')),  # noqa E501
     path('accounts/', include('backend.accounts.urls')),  # noqa E501
     path('bookstore/', include('backend.bookstore.urls', namespace='bookstore')),  # noqa E501
