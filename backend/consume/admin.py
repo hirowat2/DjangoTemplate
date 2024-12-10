@@ -31,7 +31,8 @@ def export_selected_as_csv(self, request, queryset):
 
 class ConsumeResource(resources.ModelResource):
     # product = Field(attribute='product', column_name='product_title')
-    product = Field(attribute='product', column_name='codigo', widget=ForeignKeyWidget(Product, 'codigo'))
+    product = Field(attribute='product', column_name=['codigo', 'title'],
+                    widget=ForeignKeyWidget(Product, ['codigo', 'title']))
 
     class Meta:
         model = Consume
