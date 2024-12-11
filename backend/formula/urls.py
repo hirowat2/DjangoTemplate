@@ -1,8 +1,9 @@
 from django.urls import path
 from . import views
 
-app_name = 'formula'
+app_name = 'formula'  # Certifique-se de definir o app_name aqui
+
 
 urlpatterns = [
-    path('formula/<int:formula_id>/<int:data_set_id>/', views.formula, name='formula'),
+    path('dynamic-model/', views.dynamic_model_view, name='dynamic_model_view'),
 ]

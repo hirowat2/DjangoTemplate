@@ -38,23 +38,14 @@ services:
     #   - 5051:80
 
   mailhog:
-    container_name: django_mailhog
+    container_name: mailhog
     image: mailhog/mailhog
     restart: always
-    logging:
-      driver: 'none'
     labels:
       - "traefik.enable=true"
-      # - "traefik.http.routers.mailhog.tls=true"
+      - "traefik.http.services.mailhog.loadbalancer.server.port=8025"
+      - "traefik.http.routers.mailhog.tls=true"
       - "traefik.http.routers.mailhog.rule=Host(`mailhog.docker.localhost`)"
-      - "traefik.http.routers.mailhog.entrypoints=http"
-      - "traefik.http.services.mailhog.loadbalancer.server.port=8025"  # Porta do web interface
-      - "traefik.smtp.routers.mailhog.rule=Host(`mailhog.docker.localhost`)"
-      - "traefik.smtp.services.mailhog.loadbalancer.server.port=1025"  # Porta SMTP
-
-    # ports:
-    #   - 1025:1025
-    #   - 8025:8025
     networks:
       - proxy
 
@@ -74,6 +65,7 @@ services:
     environment:
       - DB_HOST=db
       - DB_NAME=dicas_de_django_db
+      - MAILHOG_HOST=mailhog
       - DB_USER=postgres
       - DB_PASSWORD=a
       - DJANGO_SUPERUSER_USERNAME=admin

@@ -1,10 +1,8 @@
 from django.contrib import admin
-from .models import Formula, DataSet
+from .models import DynamicVariable
 
-@admin.register(Formula)
-class FormulaAdmin(admin.ModelAdmin):
-    list_display = ('name', 'expression')
+class DynamicVariableAdmin(admin.ModelAdmin):
+    list_display = ('name', 'value')
+    search_fields = ('name',)
 
-@admin.register(DataSet)
-class DataSetAdmin(admin.ModelAdmin):
-    list_display = ('name', 'a', 'b', 'c')
+admin.site.register(DynamicVariable, DynamicVariableAdmin)

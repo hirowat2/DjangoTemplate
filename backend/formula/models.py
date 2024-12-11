@@ -1,18 +1,19 @@
 from django.db import models
 
-class Formula(models.Model):
-    name = models.CharField(max_length=100)
-    expression = models.TextField(help_text="Use Python expressions. Ex: 'a + b * c'")
+def create_dynamic_model(name, fields):
+    class Meta:
+        app_label = 'formula'
 
-    def __str__(self):
-        return self.name
+    attrs = {'__module__': __name__, 'Meta': Meta}
+    for field_name, field_type in fields.items():
+        attrs[field_name] = field_type
 
+    return type(name, (models.Model,), attrs)
 
-class DataSet(models.Model):
-    name = models.CharField(max_length=100)
-    a = models.FloatField()
-    b = models.FloatField()
-    c = models.FloatField()
+# Criando um modelo dinâmico
+fields = {
+    'name': models.CharField(max_length=100),
+    'value': models.FloatField(),
+}
 
-    def __str__(self):
-        return self.name
+DynamicVariable = create_dynamic_model('DynamicVariable', fields)
