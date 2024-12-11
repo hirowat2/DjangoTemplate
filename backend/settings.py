@@ -55,10 +55,11 @@ INSTALLED_APPS = [
     'backend.bookstore',
     'backend.crm',
     'backend.expense',
-    'backend.formula',
+    # 'backend.formula',
     'backend.product',
     'backend.realty',
     'backend.reposition',
+    'backend.segment',
     'backend.todo',
 ]
 
