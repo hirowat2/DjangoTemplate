@@ -31,7 +31,6 @@ os.environ['DJANGO_ALLOW_ASYNC_UNSAFE'] = 'true'
 # Application definition
 
 INSTALLED_APPS = [
-    # 'grappelli',
     'jazzmin',
     'backend.accounts',  # <<<
     'django.contrib.admin',
@@ -41,13 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # apps de terceiros
-    # 'macros',
     'django_extensions',
     'widget_tweaks',
     'django_seed',
     'import_export',
     'rest_framework',
-    'crispy_forms',
     # minhas apps
     'backend.core',
     'backend.consume',
@@ -55,7 +52,6 @@ INSTALLED_APPS = [
     'backend.bookstore',
     'backend.crm',
     'backend.expense',
-    # 'backend.formula',
     'backend.product',
     'backend.realty',
     'backend.reposition',
@@ -73,8 +69,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-# GRAPPELLI_ADMIN_TITLE = 'ACTION LEAN DRIVEN'
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -122,9 +116,8 @@ DATABASES = {
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', 'webmaster@localhost')
-# EMAIL_HOST = config('EMAIL_HOST', 'localhost')
-EMAIL_HOST = config('EMAIL_HOST', 'django_mailhog')
-EMAIL_PORT = config('EMAIL_PORT', default=1025, cast=int)
+EMAIL_HOST = config('EMAIL_HOST', 'localhost')
+EMAIL_PORT = config('EMAIL_PORT', 1025, cast=int)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', '')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
@@ -169,9 +162,6 @@ DECIMAL_SEPARATOR = ','
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
-STATICFILES_DIRS = [
-    BASE_DIR.joinpath('static'),
-]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -185,8 +175,6 @@ CSRF_TRUSTED_ORIGINS = [
     'https://app.docker.localhost',  # Adicione o domínio aqui
     # Outros domínios confiáveis, se necessário
 ]
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'  # ou 'bootstrap5'
 
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
@@ -329,38 +317,6 @@ JAZZMIN_SETTINGS = {
     # "language_chooser": True,
 }
 
-# JAZZMIN_UI_TWEAKS = {
-#     "navbar_small_text": False,
-#     "footer_small_text": False,
-#     "body_small_text": True,
-#     "brand_small_text": False,
-#     "brand_colour": "navbar-warning",
-#     "accent": "accent-primary",
-#     "navbar": "navbar-success navbar-dark",
-#     "no_navbar_border": False,
-#     "navbar_fixed": False,
-#     "layout_boxed": False,
-#     "footer_fixed": False,
-#     "sidebar_fixed": True,
-#     "sidebar": "sidebar-dark-indigo",
-#     "sidebar_nav_small_text": False,
-#     "sidebar_disable_expand": True,
-#     "sidebar_nav_child_indent": True,
-#     "sidebar_nav_compact_style": True,
-#     "sidebar_nav_legacy_style": True,
-#     "sidebar_nav_flat_style": True,
-#     "theme": "darkly",
-#     "dark_mode_theme": "darkly",
-#     "button_classes": {
-#         "primary": "btn-primary",
-#         "secondary": "btn-secondary",
-#         "info": "btn-info",
-#         "warning": "btn-warning",
-#         "danger": "btn-danger",
-#         "success": "btn-success"
-#     }
-# }
-
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": False,
     "footer_small_text": False,
@@ -368,7 +324,7 @@ JAZZMIN_UI_TWEAKS = {
     "brand_small_text": False,
     "brand_colour": "navbar-warning",
     "accent": "accent-primary",
-    "navbar": "navbar-dark",
+    "navbar": "navbar-success navbar-dark",
     "no_navbar_border": False,
     "navbar_fixed": False,
     "layout_boxed": False,
@@ -382,7 +338,7 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_nav_legacy_style": True,
     "sidebar_nav_flat_style": True,
     "theme": "darkly",
-    "dark_mode_theme": "cyborg",
+    "dark_mode_theme": "darkly",
     "button_classes": {
         "primary": "btn-primary",
         "secondary": "btn-secondary",

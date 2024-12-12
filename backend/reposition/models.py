@@ -7,9 +7,12 @@ class Reposition(TimeStampedModel):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        null=False,  # ou default configurado, se necessário
-        blank=False,  # para garantir que seja obrigatório no formulário
+        related_name='reposições',
+        # null=False,  # ou default configurado, se necessário
+        # blank=False,  # para garantir que seja obrigatório no formulário
     )
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
     lt_pre_ordem = models.FloatField('lt pré ordem', null=True, blank=True)
     lt_ordem = models.FloatField('lt ordem', null=True, blank=True)
     lt_quarentena = models.FloatField('lt quarentena', null=True, blank=True)
@@ -22,12 +25,12 @@ class Reposition(TimeStampedModel):
     slug = models.SlugField(null=True, blank=True)
 
     class Meta:
-        ordering = ('product__title',)
+        ordering = ('product',)
         verbose_name = 'reposição'
         verbose_name_plural = 'reposições'
 
     def __str__(self):
-      return f'{self.product.codigo} | {self.product.planta} | {self.product.title}'
+      return f'{self.product.codigo}'
 
     def get_absolute_url(self):
         return reverse_lazy('reposition:reposition_detail', kwargs={'pk': self.pk})

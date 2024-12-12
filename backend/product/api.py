@@ -21,6 +21,8 @@ def list_products(request):
             un_estoque=product.un_estoque.id if product.un_estoque else None,
             tipo_embalagem=product.tipo_embalagem.id if product.tipo_embalagem else None,
             segmentation=product.segmentation.value if hasattr(product.segmentation, 'value') else str(product.segmentation),
+            type_production=product.type_production.value if hasattr(product.type_production, 'value') else str(product.type_production),
+            nivel_produto=product.nivel_produto.value if hasattr(product.nivel_produto, 'value') else str(product.nivel_produto),
             novo_codigo=product.novo_codigo,
             data_validade=product.data_validade.isoformat() if product.data_validade else None,
             quantidade_un_embalagem=product.quantidade_un_embalagem,
@@ -41,7 +43,7 @@ def list_products(request):
 def get_product(request, product_id: int):
     try:
         product = Product.objects.select_related(
-            'category', 'un_estoque', 'tipo_embalagem', 'segmentation'
+            'category', 'un_estoque', 'tipo_embalagem', 'segmentation', 'type_production', 'nivel_produto'
         ).get(pk=product_id)
         return product
     except Product.DoesNotExist:

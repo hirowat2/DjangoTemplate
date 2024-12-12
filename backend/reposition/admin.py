@@ -6,6 +6,7 @@ from import_export.admin import ExportActionModelAdmin, ImportExportModelAdmin
 from .models import Reposition
 
 from import_export.fields import Field
+from import_export.widgets import ForeignKeyWidget
 from backend.product.models import Product  # Ajuste o caminho para o modelo Product
 from django.utils.text import slugify
 from django.http import HttpResponse
@@ -27,10 +28,12 @@ def export_selected_as_csv(self, request, queryset):
     return response
 
 class RepositionResource(resources.ModelResource):
-    product = Field(attribute='product', column_name='product_title')
+    # product = Field(attribute='product', column_name='product_title')
+    product = Field(attribute='product', column_name='codigo', widget=ForeignKeyWidget(Product, 'codigo'))
     class Meta:
         model = Reposition
-        fields = ('product', 'lt_pre_ordem', 'lt_ordem', 'lt_quarentena',
+        import_id_fields = ['id']
+        fields = ('id','product', 'lt_pre_ordem', 'lt_ordem', 'lt_quarentena',
                   'lt_total', 'cv_lead_time', 'lote_minimo_rep',
                   'lote_multiplo_rep', 'intervalo_reposicao', 'campanha_ideal')
         export_order = ('product', 'lt_pre_ordem', 'lt_ordem', 'lt_quarentena',
@@ -63,8 +66,8 @@ class RepositionAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
     product_title.short_description = 'Produto'
 
 
-    list_filter = ('product__title',)  # Filtro baseado no título do produto
-    search_fields = ('product__title', 'codigo')  # Pesquisa pelo produto e código
+    list_filter = ('product',)  # Filtro baseado no título do produto
+    search_fields = ('product__title', 'product__codigo')  # Pesquisa pelo produto e código
     fieldsets = (
         ('Produto', {
             'fields': ('product',)

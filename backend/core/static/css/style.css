@@ -22,23 +22,3 @@
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
-.submenu {
-    display: none;
-    transition: all 0.3s ease-in-out;
-}
-
-.submenu-visible {
-    display: block;
-}
-.content {
-    margin-left: 240px; /* Deve corresponder à largura do menu */
-    padding: 20px;
-}
-.sidebar {
-    position: fixed;
-    width: 240px; /* ou o valor que você usa */
-    height: 100%;
-    z-index: 1000; /* Certifique-se de que seja maior que outros elementos */
-    background-color: #f8f9fa;
-    overflow-y: auto; /* Para rolar o menu, se necessário */
-}

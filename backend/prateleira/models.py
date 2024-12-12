@@ -7,8 +7,9 @@ class Prateleira(TimeStampedModel):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        null=False,  # ou default configurado, se necessário
-        blank=False,  # para garantir que seja obrigatório no formulário
+        related_name='prateleiras',
+        # null=False,  # ou default configurado, se necessário
+        # blank=False,  # para garantir que seja obrigatório no formulário
     )
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -26,15 +27,15 @@ class Prateleira(TimeStampedModel):
     transito = models.FloatField('transito',null=True, blank=True)
     prateleira_total = models.FloatField('prateleira total',null=True, blank=True)
     pto_reposicao = models.FloatField('pto reposição',null=True, blank=True)
-    slug = models.SlugField(null=True, blank=True)
+    slug = models.SlugField('slug de prateleira', null=True, blank=True)
 
     class Meta:
-        ordering = ('product__title',)
+        ordering = ('product',)
         verbose_name = 'prateleira'
         verbose_name_plural = 'prateleiras'
 
     def __str__(self):
-      return f'{self.product.codigo} | {self.product.planta} | {self.product.title}'
+      return f'{self.product.codigo}'
 
     def get_absolute_url(self):
         return reverse_lazy('prateleira:prateleira_detail', kwargs={'pk': self.pk})

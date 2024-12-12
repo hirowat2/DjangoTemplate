@@ -1,7 +1,6 @@
 from django import forms
 
-from .models import Prateleira
-
+from .models import Prateleira, Product
 
 class PrateleiraForm(forms.ModelForm):
     required_css_class = 'required'

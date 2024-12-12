@@ -1,7 +1,9 @@
 from django.db import models
 from django.urls import reverse_lazy
 from backend.core.models import TimeStampedModel
-
+from backend.segment.models import Segment  # Assumindo que o Segment está no app "segment"
+from django.utils.text import slugify
+from django.db.models import JSONField
 class Category(models.Model):
     title = models.CharField('título', max_length=255, unique=True)
 
@@ -12,45 +14,59 @@ class Category(models.Model):
 
     def __str__(self):
         return f'{self.title}'
-
 class UnEstoque(models.Model):
-    title = models.CharField('título', max_length=255, unique=True)
+    title = models.CharField('Título', max_length=255, unique=True)
 
     class Meta:
         ordering = ('title',)
-        verbose_name = 'un_estoque'
-        verbose_name_plural = 'un_estoque'
+        verbose_name = 'Un Estoque'
+        verbose_name_plural = 'Un Estoques'
 
     def __str__(self):
-        return f'{self.title}'
+        return self.title
 
 
-class tipo_embalagem(models.Model):
-    title = models.CharField('título', max_length=255, unique=True)
+class TipoEmbalagem(models.Model):
+    title = models.CharField('Título', max_length=255, unique=True)
 
     class Meta:
         ordering = ('title',)
-        verbose_name = 'tipo_embalagem'
-        verbose_name_plural = 'tipo_embalagem'
+        verbose_name = 'Tipo de Embalagem'
+        verbose_name_plural = 'Tipos de Embalagem'
 
     def __str__(self):
-        return f'{self.title}'
+        return self.title
 
-class segmentation(models.Model):
-    title = models.CharField('título', max_length=255, unique=True)
-
-    class Meta:
-        ordering = ('title',)
-        verbose_name = 'segmentation'
-        verbose_name_plural = 'segmentation'
-
-    def __str__(self):
-        return f'{self.title}'
 
 class Product(TimeStampedModel):
-    title = models.CharField('título', max_length=255, unique=True)
-    description = models.TextField('descrição', null=True, blank=True)
-    price = models.DecimalField('custo unitário', max_digits=9, decimal_places=2, null=True, blank=True)
+    # Relacionamentos
+    un_estoque = models.ForeignKey(UnEstoque, on_delete=models.CASCADE, related_name='products', null=True, blank=True)
+    tipo_embalagem = models.ForeignKey(TipoEmbalagem, on_delete=models.SET_NULL, related_name='products', null=True, blank=True)
+    segment = models.OneToOneField(
+        Segment,
+        on_delete=models.SET_NULL,
+        related_name='products',
+        null=True,
+        blank=True
+    )
+
+
+    # Campos adicionais
+    slug = models.SlugField()
+    codigo = models.CharField(max_length=100)
+    novo_codigo = models.CharField(max_length=100)
+    data_validade = models.DateField()
+    planta = models.CharField('planta', max_length=100, null=True, blank=True)
+    quantidade_un_embalagem = models.PositiveIntegerField('Qtd und na embalagem', null=True, blank=True)
+    und_armazen = models.CharField('Und Armazen', max_length=100, null=True, blank=True)
+    quantidade_embalagem_un_armazenamento = models.PositiveIntegerField('Qtd emb um Armaz', null=True, blank=True)
+    codigo_predecessor = models.CharField('Código do Predecessor', max_length=100, null=True, blank=True)
+
+
+    # Campos obrigatórios do produto
+    title = models.CharField('Título', max_length=255, unique=True)
+    description = models.TextField('Descrição', null=True, blank=True)
+    price = models.DecimalField('Custo Unitário', max_digits=9, decimal_places=2, null=True, blank=True)
     category = models.ForeignKey(
         'Category',
         on_delete=models.SET_NULL,
@@ -59,50 +75,35 @@ class Product(TimeStampedModel):
         null=True,
         blank=True,
     )
-    un_estoque = models.ForeignKey(
-        'UnEstoque',
-        on_delete=models.CASCADE,
-        verbose_name='un_estoque',
-        related_name='products',
-        null=True,
-        blank=True,
-    )
-    tipo_embalagem = models.ForeignKey(
-        'tipo_embalagem',
-        on_delete=models.SET_NULL,
-        verbose_name='tipo_embalagem',
-        related_name='products',
-        null=True,
-        blank=True,
-    )
-    segmentation = models.ForeignKey(
-        'segmentation',
-        on_delete=models.SET_NULL,
-        verbose_name='segmentation',
-        related_name='products',
-        null=True,
-        blank=True,
-    )
-    slug = models.SlugField(null=True, blank=True)
 
-    # Novos campos adicionados
-    planta = models.CharField('planta', max_length=100, null=True, blank=True)
-    codigo = models.CharField('código', max_length=50, unique=True, default='default_codigo')
-    novo_codigo = models.CharField('novo código', max_length=50, null=True, blank=True)
-    data_validade = models.DateField('data de validade', null=True, blank=True)
-    quantidade_un_embalagem = models.PositiveIntegerField('quantidade un embalagem', null=True, blank=True)
-    quantidade_embalagem_un_armazenamento = models.PositiveIntegerField('quantidade embalagem un armazenamento', null=True, blank=True)
-    codigo_predecessor = models.CharField('código predecessor', max_length=50, null=True, blank=True)
-    # custo_unitario = models.DecimalField('custo unitário', max_digits=9, decimal_places=2, null=True, blank=True)
+    # Campos dinâmicos como JSON para armazenar as propriedades do Segment
+    seg_name = JSONField(default=dict, null=True, blank=True)
+    type_prod = JSONField(default=dict, null=True, blank=True)
+    prod_level = JSONField(default=dict, null=True, blank=True)
+    possible_segment = JSONField(default=dict, null=True, blank=True)
 
     class Meta:
         ordering = ('title',)
-        verbose_name = 'produto'
-        verbose_name_plural = 'produtos'
+        verbose_name = 'Produto'
+        verbose_name_plural = 'Produtos'
 
     def __str__(self):
-        # return f'{self.codigo} | {self.planta} | {self.title}'
-        return f'{self.codigo}'
+        return f'{self.title} - {self.segment.title if self.segment else "No Segment"}'
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+
+        # Populate dynamic properties field based on the related Segment
+        if self.segment:
+            # Obtendo os campos do Segmento
+            self.seg_name = {field.name: getattr(self.segment, field.name) for field in self.segment._meta.fields}
+            self.type_prod = {field.name: getattr(self.segment, field.name) for field in self.segment._meta.fields if hasattr(self.segment, 'type_prod')}
+            self.prod_level = {field.name: getattr(self.segment, field.name) for field in self.segment._meta.fields if hasattr(self.segment, 'prod_level')}
+            self.possible_segment = {field.name: getattr(self.segment, field.name) for field in self.segment._meta.fields if hasattr(self.segment, 'possible_segment')}
+
+        super().save(*args, **kwargs)
+
 
     def get_absolute_url(self):
         return reverse_lazy('product:product_detail', kwargs={'pk': self.pk})
@@ -118,9 +119,8 @@ class Product(TimeStampedModel):
     def verbose_name_plural(self):
         return self._meta.verbose_name_plural
 
-
 class Photo(TimeStampedModel):
-    photo = models.ImageField(upload_to='')
+    photo = models.ImageField(upload_to='products/photos/')  # Specify directory for photos
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     class Meta:

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Reposition
+from .models import Reposition, Product
 
 
 class RepositionForm(forms.ModelForm):

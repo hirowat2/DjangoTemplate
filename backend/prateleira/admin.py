@@ -6,6 +6,7 @@ from import_export.admin import ExportActionModelAdmin, ImportExportModelAdmin
 from .models import Prateleira
 
 from import_export.fields import Field
+from import_export.widgets import ForeignKeyWidget
 from backend.product.models import Product  # Ajuste o caminho para o modelo Product
 from django.utils.text import slugify
 from django.http import HttpResponse
@@ -29,11 +30,12 @@ def export_selected_as_csv(self, request, queryset):
 
 
 class PrateleiraResource(resources.ModelResource):
-    product = Field(attribute='product', column_name='product_title')
-
+    # product = Field(attribute='product', column_name='product_title')
+    product = Field(attribute='product', column_name='codigo', widget=ForeignKeyWidget(Product, 'codigo'))
     class Meta:
         model = Prateleira
-        fields = ('product',
+        import_id_fields = ['id']
+        fields = ('id', 'product',
             'formula_calculo',
             'reserva_historico',
             'inicio_reserva',
@@ -48,6 +50,7 @@ class PrateleiraResource(resources.ModelResource):
             'transito',
             'prateleira_total',
             'pto_reposicao',)
+        exclude = ['title']
         export_order = ('product',
             'formula_calculo',
             'reserva_historico',
@@ -64,10 +67,10 @@ class PrateleiraResource(resources.ModelResource):
             'prateleira_total',
             'pto_reposicao',)
 
-    def before_import_row(self, row, **kwargs):
-        # Buscar o produto pelo título antes de salvar
-        product_title = row.get('product_title')
-        row['product'] = Product.objects.filter(title=product_title).first()
+    # def before_import_row(self, row, **kwargs):
+    #     # Buscar o produto pelo título antes de salvar
+    #     product_title = row.get('product_title')
+    #     row['product'] = Product.objects.filter(title=product_title).first()
 
 
 
@@ -127,7 +130,7 @@ class PrateleiraAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
         }),
     )
 
-    search_fields = ('product__title',)
+    search_fields = ('product__title', 'product__codigo')
 
     # Personalizando como os campos são exibidos no formulário de edição
     def save_model(self, request, obj, form, change):
