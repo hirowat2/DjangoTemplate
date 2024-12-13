@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse_lazy
 from backend.core.models import TimeStampedModel
-from backend.segment.models import Segment  # Assumindo que o Segment está no app "segment"
+from backend.segment.models import Segment, TypeProduction, ProdLevel  # Assumindo que o Segment está no app "segment"
 from django.utils.text import slugify
 from django.db.models import JSONField
 class Category(models.Model):
@@ -42,13 +42,7 @@ class Product(TimeStampedModel):
     # Relacionamentos
     un_estoque = models.ForeignKey(UnEstoque, on_delete=models.CASCADE, related_name='products', null=True, blank=True)
     tipo_embalagem = models.ForeignKey(TipoEmbalagem, on_delete=models.SET_NULL, related_name='products', null=True, blank=True)
-    segment = models.OneToOneField(
-        Segment,
-        on_delete=models.SET_NULL,
-        related_name='products',
-        null=True,
-        blank=True
-    )
+    segment = models.OneToOneField(Segment, on_delete=models.SET_NULL, related_name='products', null=True, blank=True)
 
 
     # Campos adicionais
@@ -77,10 +71,13 @@ class Product(TimeStampedModel):
     )
 
     # Campos dinâmicos como JSON para armazenar as propriedades do Segment
-    seg_name = JSONField(default=dict, null=True, blank=True)
-    type_prod = JSONField(default=dict, null=True, blank=True)
-    prod_level = JSONField(default=dict, null=True, blank=True)
-    possible_segment = JSONField(default=dict, null=True, blank=True)
+    seg_name = models.CharField('Título', max_length=255, null=True, blank=True)
+    type_production =  models.OneToOneField(TypeProduction, on_delete=models.SET_NULL, null=True, blank=True, related_name="products")
+
+    nivel_produto = models.OneToOneField(ProdLevel, on_delete=models.SET_NULL, null=True, blank=True, related_name="products")
+
+    possible_segment = models.CharField('Título', max_length=255, null=True, blank=True)
+
 
     class Meta:
         ordering = ('title',)
@@ -96,11 +93,14 @@ class Product(TimeStampedModel):
 
         # Populate dynamic properties field based on the related Segment
         if self.segment:
-            # Obtendo os campos do Segmento
-            self.seg_name = {field.name: getattr(self.segment, field.name) for field in self.segment._meta.fields}
-            self.type_prod = {field.name: getattr(self.segment, field.name) for field in self.segment._meta.fields if hasattr(self.segment, 'type_prod')}
-            self.prod_level = {field.name: getattr(self.segment, field.name) for field in self.segment._meta.fields if hasattr(self.segment, 'prod_level')}
-            self.possible_segment = {field.name: getattr(self.segment, field.name) for field in self.segment._meta.fields if hasattr(self.segment, 'possible_segment')}
+            self.seg_name = self.segment.title
+            # self.type_prod = self.segment.type_prod
+            # self.prod_level = self.segment.prod_level
+            self.possible_segment = self.segment.possible_segment
+            # self.seg_name = {field.name: getattr(self.segment, field.name) for field in self.segment._meta.fields}
+            # self.type_prod = {field.name: getattr(self.segment, field.name) for field in self.segment._meta.fields if hasattr(self.segment, 'type_prod')}
+            # self.prod_level = {field.name: getattr(self.segment, field.name) for field in self.segment._meta.fields if hasattr(self.segment, 'prod_level')}
+            # self.possible_segment = {field.name: getattr(self.segment, field.name) for field in self.segment._meta.fields if hasattr(self.segment, 'possible_segment')}
 
         super().save(*args, **kwargs)
 

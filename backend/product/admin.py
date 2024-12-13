@@ -1,12 +1,25 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ExportActionModelAdmin, ImportExportModelAdmin
-from .models import Product, Category, UnEstoque, Photo
+from .models import Product, Category, UnEstoque, Photo, TipoEmbalagem
 from backend.segment.models import Segment
 from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget
 from django.utils.text import slugify
 from django.http import HttpResponse
+
+@admin.register(UnEstoque)
+class un_estoqueAdmin(admin.ModelAdmin):
+    list_display = ('__str__',)
+    search_fields = ('title',)
+@admin.register(TipoEmbalagem)
+class tipo_embalagemAdmin(admin.ModelAdmin):
+    list_display = ('__str__',)
+    search_fields = ('title',)
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('__str__',)
+    search_fields = ('title',)
 
 class ProductResource(resources.ModelResource):
     segmentation = Field(
@@ -71,7 +84,7 @@ class ProductAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
                        'codigo_predecessor')
         }),
         ('Segmento', {
-            'fields': ('segment', 'seg_name', 'type_prod', 'prod_level', 'possible_segment')
+            'fields': ('segment', 'seg_name', 'type_production', 'nivel_produto', 'possible_segment')
         }),
     )
 
@@ -103,10 +116,10 @@ class ProductAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
                     field_value = getattr(obj.segment, field_name)
                     if field_name == 'segmentation':
                         obj.seg_name = field_value
-                    elif field_name == 'type_prod':
-                        obj.type_prod = field_value
-                    elif field_name == 'prod_level':
-                        obj.prod_level = field_value
+                    # elif field_name == 'type_prod':
+                    #     obj.type_prod = field_value
+                    # elif field_name == 'prod_level':
+                    #     obj.prod_level = field_value
                     elif field_name == 'possible_segment':
                         obj.possible_segment = field_value
 

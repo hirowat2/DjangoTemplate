@@ -32,7 +32,7 @@ class Segment(TimeStampedModel):
         'ProdLevel',
         on_delete=models.CASCADE,
         verbose_name='Nível do produto',
-        related_name='products',
+        related_name='segment',
         null=True,
         blank=True,
     )
@@ -41,7 +41,7 @@ class Segment(TimeStampedModel):
         'TypeProduction',
         on_delete=models.CASCADE,
         verbose_name='Tipo do Produto',
-        related_name='products',
+        related_name='segment',
         null=True,
         blank=True,
     )
