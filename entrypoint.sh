@@ -37,6 +37,7 @@ except ObjectDoesNotExist:
 
 # python3 manage.py createsuperuser --noinput --email $DJANGO_SUPERUSER_EMAIL
 python3 manage.py check
+# python3 manage.py tailwind init
 
 # # Definir a senha do superusuário com a variável de ambiente
 # echo "Definindo a senha do superusuário..."

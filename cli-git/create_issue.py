@@ -2,7 +2,6 @@ import click
 import requests
 from decouple import config
 
-
 REPO_OWNER = config('REPO_OWNER')
 REPO_NAME = config('REPO_NAME')
 TOKEN = config('TOKEN')

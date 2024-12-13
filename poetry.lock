@@ -522,6 +522,23 @@ Faker = ">=0.7.7"
 toposort = ">=1.5"
 
 [[package]]
+name = "django-tailwind"
+version = "3.8.0"
+description = "Tailwind CSS Framework for Django projects"
+optional = false
+python-versions = ">=3.10.0,<4.0.0"
+files = [
+    {file = "django_tailwind-3.8.0-py3-none-any.whl", hash = "sha256:fa969c5b95d314b173fe2b2ed2cb2c03f2e2c94fdc2c01ff73a993fa159085da"},
+    {file = "django_tailwind-3.8.0.tar.gz", hash = "sha256:31c2f4a7879d685c2de0feaf0b63f246200b37337bea4d7dbafb59bc3f10c008"},
+]
+
+[package.dependencies]
+django = ">=3.2.14"
+
+[package.extras]
+reload = ["django-browser-reload (>=1.12.1,<2.0.0)"]
+
+[[package]]
 name = "django-widget-tweaks"
 version = "1.5.0"
 description = "Tweak the form field rendering in templates, not in python-level form definitions."
@@ -2343,4 +2360,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "736a9c55de397dc92042dc3b62e8f13f829c1b846628ff5d88cff11c4ba71ede"
+content-hash = "e08057a91fd83fa3fd4463fff0f9afca3f278afd5e944bc1d1c6e82ba29af83b"

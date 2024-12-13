@@ -45,12 +45,15 @@ INSTALLED_APPS = [
     'django_seed',
     'import_export',
     'rest_framework',
+    "tailwind",
+    "crispy_forms",
     # minhas apps
     'backend.core',
     'backend.consume',
     'backend.prateleira',
     'backend.bookstore',
     'backend.crm',
+    'backend.dash',
     'backend.expense',
     'backend.product',
     'backend.realty',
@@ -348,3 +351,5 @@ JAZZMIN_UI_TWEAKS = {
         "success": "btn-success"
     }
 }
+
+TAILWIND_APP_NAME = 'theme'
