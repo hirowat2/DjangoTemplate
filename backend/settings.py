@@ -172,7 +172,7 @@ LOGIN_REDIRECT_URL = 'core:dashboard'
 LOGOUT_REDIRECT_URL = 'core:index'
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://leandriven.docker.localhost',  # Adicione o domínio aqui
+    'https://app.docker.localhost',  # Adicione o domínio aqui
     # Outros domínios confiáveis, se necessário
 ]
 
