@@ -1,6 +1,7 @@
 <!-- home.html -->
 {% extends "base.html" %}
 
+{% load dashboard_tags %}
 
 {% block title %}Home{% endblock %}
 
@@ -8,6 +9,6 @@
   <h1>Bem-vindo ao Dashboard</h1>
   <p>Esta é a página inicial.</p>
   <!-- Incluir o gráfico -->
-  <!-- {% include "components/chart.html" with chart_data=sample_chart_data %} -->
+  {% include "components/chart.html" with chart_data=sample_chart_data %}
 
 {% endblock %}

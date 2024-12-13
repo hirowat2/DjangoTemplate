@@ -45,8 +45,9 @@ INSTALLED_APPS = [
     'django_seed',
     'import_export',
     'rest_framework',
-    "tailwind",
-    "crispy_forms",
+    'tailwind',
+    'crispy_forms',
+    # 'django_dashboards',
     # minhas apps
     'backend.core',
     'backend.consume',
