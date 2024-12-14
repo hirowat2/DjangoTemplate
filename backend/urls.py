@@ -17,7 +17,11 @@ urlpatterns = [
     path('expense/', include('backend.expense.urls', namespace='expense')),  # noqa E501
     path('product/', include('backend.product.urls', namespace='product')),  # noqa E501
     path('consume/', include('backend.consume.urls', namespace='consume')),  # noqa E501
-    path('dash/', include('backend.dash.urls', namespace='dash')),  # noqa E501
+    path('vehicle/', include('backend.vehicle.urls', namespace='vehicle')),  # noqa E501
+    path('kitchensink/', include('backend.kitchensink.urls', namespace='kitchensink')),  # noqa E501
+    path('dashboards/', include('backend.dashboards.urls', namespace='dashboards')),  # noqa E501
+    # path('dashboards/', include('dashboards.urls')),
+    # path('dash/', include('backend.dash.urls', namespace='dash')),  # noqa E501
     path('prateleira/', include('backend.prateleira.urls', namespace='prateleira')),  # noqa E501
     path('reposition/', include('backend.reposition.urls', namespace='reposition')),  # noqa E501
     path('segment/', include('backend.segment.urls', namespace='segment')),  # noqa E501

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tabbed Dashboard</title>
+</head>
+<body>
+    <h1>Tabbed Dashboard</h1>
+    <div id="tabs">
+        {% for tab in tabs %}
+            <div>{{ tab.render|safe }}</div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+

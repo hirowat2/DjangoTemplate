@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     # apps de terceiros
     'django_extensions',
     'widget_tweaks',
@@ -47,19 +48,22 @@ INSTALLED_APPS = [
     'rest_framework',
     'tailwind',
     'crispy_forms',
-    # 'django_dashboards',
+    # 'dashboards',
     # minhas apps
     'backend.core',
     'backend.consume',
     'backend.prateleira',
     'backend.bookstore',
     'backend.crm',
-    'backend.dash',
+    'backend.dashboards',
+    # 'backend.dash.apps.MydashboardConfig',
     'backend.expense',
     'backend.product',
     'backend.realty',
     'backend.reposition',
     'backend.segment',
+    'backend.vehicle',
+    'backend.kitchensink',
     'backend.todo',
 ]
 
@@ -70,8 +74,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.LoginRequiredMiddleware',  # <---
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'backend.urls'
