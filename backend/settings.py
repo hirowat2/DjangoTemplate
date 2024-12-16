@@ -48,6 +48,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'tailwind',
     'crispy_forms',
+    # 'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'django_plotly_dash',
+    'plotly',
+    'channels',
     # 'dashboards',
     # minhas apps
     'backend.core',
@@ -55,15 +59,15 @@ INSTALLED_APPS = [
     'backend.prateleira',
     'backend.bookstore',
     'backend.crm',
-    'backend.dashboards',
+    'backend.dash',
     # 'backend.dash.apps.MydashboardConfig',
     'backend.expense',
     'backend.product',
     'backend.realty',
     'backend.reposition',
     'backend.segment',
-    'backend.vehicle',
-    'backend.kitchensink',
+    # 'backend.vehicle',
+    # 'backend.kitchensink',
     'backend.todo',
 ]
 
@@ -360,3 +364,13 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 TAILWIND_APP_NAME = 'theme'
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379),],
+        },
+    },
+}
